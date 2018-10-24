@@ -67,6 +67,7 @@
 			$termek = $_GET["termek"];
 			if (isset($_GET["add"])) {
 				$result = mysql_query("SELECT quantity FROM products WHERE id=$termek");
+				//afiseaza eroare in cazul in care se comanda mai multe bucati decat sunt in stoc
 				$row = mysql_fetch_array($result, MYSQL_NUM);
 				if (intval($row[0]) - intval($_GET["add"]) < 0 ) {
 					header("location hiba.php?tipus1=2");
@@ -89,9 +90,9 @@
 					$_SESSION["cart"] = $new_cart;
 				}
 			}
-			else if (isset($_GET["sub"])) {
-				// Termek visszautasitasa.
-				// Van-e meg ilyen termek?
+			/*else if (isset($_GET["sub"])) {
+				// Urmeaza de implementat - candva...
+				
 				$result = mysql_query("SELECT quantity FROM products WHERE id=$termek");
 				$row = mysql_fetch_array($result, MYSQL_NUM);
 				$cart = $_SESSION["cart"];
@@ -121,6 +122,7 @@
 					$_SESSION["cart"] = $new_cart;
 				}
 			}
+			*/
 			else {
 				// Uj termek kerul a kosarba.
 				// Adatbazis ellenorzese:

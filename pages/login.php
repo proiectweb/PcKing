@@ -50,49 +50,49 @@
 		</div>
 	</nav>
 		<?php
-			// Feldolgozza a reg adatokat es elmenti oket az adatbazisba, ha nincs atfedes.
+			
 			$ok = 1;
 			if (!empty($_POST)) {
 				if (isset($_POST["nev"]))
 					$nev = $_POST["nev"];
 				else
-					// Hibauzenet es megall a feldolgozas
+					
 					$ok = 0;
 				if (isset($_POST["jelszo"]) and $ok == 1)
 					$jelszo = $_POST["jelszo"];
 				else
-					// Hibauzenet es megall a feldolgozas
+					
 					$ok = 0;
 				if ($ok == 1) {
-					// Adatbazis megnyitasa
+					
 					$db_connection = mysql_connect("localhost", "root", "");
 					if (!$db_connection) {
 						die("Couldn't connect to the database!");
 					}
 					mysql_select_db("webshop", $db_connection);
-					// Felhasznalonev ellenorzese.
+					
 					$result = mysql_query("SELECT COUNT(*) FROM user WHERE username = '$nev'");
 					$row = mysql_fetch_array($result, MYSQL_NUM);
-					// Ha mar szerepel, hibauzenet
+					
 					if ($row[0] == 0) {
-						# Hibauzenetet is kiir.
+						
 						echo "Wrong user!";
 						$ok = 0;
 					}
-					// Jelszo ellenorzese.
+					
 					$result = mysql_query("SELECT password FROM user WHERE username = '$nev'");
 					$row = mysql_fetch_array($result, MYSQL_NUM);
 					if (strcmp(sha1($jelszo), $row[0])) {
-						// Hibauzenet.
+						
 						echo "Wrong password!";
 						$ok = 0;
 					}
 					if ($ok == 1) {
-						// Felhasznalo beszurasa az adatbazisba.
+						
 						$_SESSION["user"] = $nev;
 						header("Location: ../index.php?".session_name()."=".session_id());
 					}
-					// Adatbazis bezarasa.
+					
 					mysql_close($db_connection);
 				}
 			}
