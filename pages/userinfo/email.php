@@ -66,11 +66,11 @@
 				$ok1 = 1;
 				if($ok1 == 1) {
 					if (!isset($_SESSION["user"]) or !strcmp($_SESSION["user"], "")) {
-
+					// Hibauzenet!
 					header("Location: index.php");
 					}
 					else {
-
+						// Session zarasa.
 						session_unset();
 						session_destroy();
 						header("Location: ../login.php");
