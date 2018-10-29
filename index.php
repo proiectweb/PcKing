@@ -44,7 +44,25 @@
 						<?php
 							if (isset($_SESSION["user"])) {
 								echo "<li><a href=\"pages/user.php\">Welcome, ".$_SESSION["user"]; echo "!</a></li>";
-								echo "<li><a href=\"pages/rendeles.php\">Cart</a></li>";
+
+                                if (!isset($_SESSION["cart"]))
+                                    echo "<li><a href=\"pages/rendeles.php\">Items in cart: 0</a></li>";
+                                else {
+                                    $kosar = $_SESSION["cart"];
+                                    $db_connection = mysql_connect("localhost", "root", "");
+                                    mysql_select_db("webshop", $db_connection);
+
+                                    $sum = 0;
+                                    foreach ($kosar as &$elem) {
+                                        $items = explode(",", $elem);
+                                        $result = mysql_query("SELECT name, quantity FROM products WHERE id=$items[0]");
+                                        $row = mysql_fetch_array($result, MYSQL_NUM);
+                                        $sum += intval($items[1]);
+                                    }
+
+                                    echo "<li><a href=\"pages/rendeles.php\">Items in cart: $sum</a></li>";
+                                }
+
 								echo "<li><a href=\"pages/Logout.php\">Logout</a></li>";
 							}
 							else{
@@ -231,5 +249,29 @@
 	</footer>
 	</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
